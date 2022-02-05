@@ -1,3 +1,4 @@
+import Select from "@material-ui/core/Select";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
@@ -9,12 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
-import dayjs, { Dayjs } from "dayjs";
-import React, { useCallback, useState } from "react";
+import dayjs from "dayjs";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { IReservation } from "../models/IReservation";
 import { DateTimePicker } from "@material-ui/pickers";
-import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 
 const initReservation: IReservation = {
   id: '001',
@@ -40,13 +42,11 @@ const initReservation: IReservation = {
 };
 
 const useStyle = makeStyles((theme) => ({
-  root: {
-    '& .MuiTestFileld-root': {
-      margin: theme.spacing(1),
-    },
-  },
   paper: {
     padding: theme.spacing(1),
+    '& > div': {
+      marginBottom: theme.spacing(2),
+    },
   },
   rightActions: {
     textAlign: 'right',
@@ -65,8 +65,15 @@ export const Reservation: React.FC = () => {
   });
 
   return (
-    <Container maxWidth="sm" className={style.root}>
+    <Container maxWidth="sm">
       <Paper className={style.paper}>
+        <FormControl>
+          <InputLabel id="facility-label">設備</InputLabel>
+          <Select label="facility-label">
+            <MenuItem>text1</MenuItem>
+            <MenuItem>text2</MenuItem>
+          </Select>
+        </FormControl>
       <div style={{ display: 'flex' }}>
           <Controller
             control={control}
