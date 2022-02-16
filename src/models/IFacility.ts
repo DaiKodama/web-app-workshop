@@ -1,4 +1,4 @@
-import { ISystem } from "./ISystem";
+import { ISystem } from './ISystem';
 
 export interface IFacility {
   id: string;
