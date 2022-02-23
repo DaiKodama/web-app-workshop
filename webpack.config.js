@@ -35,11 +35,13 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: 'resources/index.html',
+      publicPath: '/',
     }),
   ],
   devServer: {
     static: path.join(__dirname, 'dist'),
     compress: true,
     port: 8080,
+    historyApiFallback: true,
   },
 };
