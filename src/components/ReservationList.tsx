@@ -2,11 +2,12 @@ import { Divider, makeStyles } from "@material-ui/core";
 import { indigo, lightBlue, lightGreen, orange, purple, red, teal, yellow } from "@material-ui/core/colors";
 import { styles } from "@material-ui/pickers/views/Calendar/Calendar";
 import dayjs from "dayjs";
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { IFacility } from "../models/IFacility";
 import { IReservation } from "../models/IReservation";
-import { FacilityLane } from './FacilityLane'
+import { FacilityLane } from './FacilityLane';
+import { ReservationListHeader } from './ReservationListHeader';
 
 /** @format */
 
@@ -148,10 +149,28 @@ const getColor = (n: number) => {
 };
 
 export const ReservationList : React.FC = () => {
+  const cell = useRef<HTMLDivElement>(null);
+  const [cellWidth, setCellWidth] = useState<number>(0);
   const styles = useStyles();
+  const onResizse = useCallback(() => {
+    if(!cell?.current) return;
+    setCellWidth(cell.current.getBoundingClientRect().width);
+  },[cell]);
+  useEffect(onResizse, [cell]);
+  useEffect(() => {
+    window.addEventListener('resize', onResizse);
+    return() => {
+      window.removeEventListener('resize', onResizse);
+    }
+  },[])
   const headerCells = useMemo(() => {
     const cells: JSX.Element[] = [];
-    for (let i = 8; i <= 19; i++) {
+    cells.push(
+    <div key={8} ref={cell} className="timeCell">
+      8
+    </div>,
+    );
+    for (let i = 9; i <= 19; i++) {
       cells.push(<div key={i} className="timeCell">
         {i}
       </div>,
@@ -166,7 +185,7 @@ export const ReservationList : React.FC = () => {
       );
       return(<FacilityLane
         key={facility.id}
-        cellWidth={30}
+        cellWidth={cellWidth}
         facility={facility}
         reservations={reservations}
         className={styles.lane}
@@ -174,9 +193,10 @@ export const ReservationList : React.FC = () => {
         />
       );
     });
-  },[styles.lane]);
+  },[styles.lane, cellWidth]);
   return (
   <div>
+    <ReservationListHeader />
     <div>
       <div className={styles.lane}>
         <div className="laneHeader"></div>
