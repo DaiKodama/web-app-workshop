@@ -1,11 +1,28 @@
-import { Divider, makeStyles } from "@material-ui/core";
-import { indigo, lightBlue, lightGreen, orange, purple, red, teal, yellow } from "@material-ui/core/colors";
-import { styles } from "@material-ui/pickers/views/Calendar/Calendar";
-import dayjs from "dayjs";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { IFacility } from "../models/IFacility";
-import { IReservation } from "../models/IReservation";
+import {
+  indigo,
+  lightBlue,
+  lightGreen,
+  orange,
+  purple,
+  red,
+  teal,
+  yellow,
+} from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import dayjs, { Dayjs } from 'dayjs';
+import React, {
+  createContext,
+  Dispatch,
+  Reducer,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
+import { IFacility } from '../models/IFacility';
+import { IReservation } from '../models/IReservation';
 import { FacilityLane } from './FacilityLane';
 import { ReservationListHeader } from './ReservationListHeader';
 
@@ -148,7 +165,40 @@ const getColor = (n: number) => {
   return colors[index];
 };
 
+type ActionType = 'ChangeDate' | 'NextDay' | 'PrevDay';
+
+export type Action = {
+  type: ActionType;
+  payload?: Dayjs;
+};
+
+export type StateType = {
+  currentDate: Dayjs;
+};
+
+export const reducerProcesses: {
+  [type in ActionType]: (s: StateType, a: Action) => StateType;
+} = {
+  ChangeDate: (s, a) => {
+    return a.payload ? { ...s, currentDate: a.payload } : s;
+  },
+  NextDay: (s) => ({ ...s, currentDate: s.currentDate.add(1, 'day') }),
+  PrevDay: (s) => ({ ...s, currentDate: s.currentDate.add(-1, 'day') }),
+};
+
+const reducer: Reducer<StateType, Action> = (state, action) => {
+  return reducerProcesses[action.type](state, action);
+};
+
+type ContexType = {
+  currentDate: Dayjs;
+  dispatch: Dispatch<Action>;
+};
+
+export const currentDateContext = createContext<ContexType>({} as ContexType);
+
 export const ReservationList : React.FC = () => {
+  const [state, dispatch] = useReducer(reducer, { currentDate: dayjs() });
   const cell = useRef<HTMLDivElement>(null);
   const [cellWidth, setCellWidth] = useState<number>(0);
   const styles = useStyles();
@@ -196,6 +246,9 @@ export const ReservationList : React.FC = () => {
   },[styles.lane, cellWidth]);
   return (
   <div>
+    <currentDateContext.Provider
+      value={{ currentDate: state.currentDate, dispatch }}
+    >
     <ReservationListHeader />
     <div>
       <div className={styles.lane}>
@@ -204,6 +257,7 @@ export const ReservationList : React.FC = () => {
       </div>
       {lanes}
     </div>
+    </currentDateContext.Provider>
   </div>
   );
 };
