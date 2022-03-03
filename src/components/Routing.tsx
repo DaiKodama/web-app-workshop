@@ -3,10 +3,12 @@ import { Switch,  Route } from "react-router-dom";
 import { Reservation } from './Reservation';
 import { Facility } from './Facility'
 import { ReservationList } from './ReservationList';
+import { ReservationFacilityList } from './ReservationFacilityList';
 
 export const Routing: React.FC = () => {
   return (
     <Switch>
+      <Route path="/reservationfacilitylist" component={ReservationFacilityList} />
       <Route path="/reservation" component={Reservation} />
       <Route path="/facility" component={Facility}/>
       <Route path="/" exact component={ReservationList}/>

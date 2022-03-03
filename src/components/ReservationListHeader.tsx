@@ -29,6 +29,9 @@ const useStyles = makeStyles(() => ({
     top: "-2em",
     marginBottom: "-1.5em",
   },
+  reserve: {
+    marginRight:"20px",
+  }
 }));
 
 export const ReservationListHeader: React.FC = () => {
@@ -66,6 +69,9 @@ export const ReservationListHeader: React.FC = () => {
         </div>
       </div>
       <div className={styles.actions}>
+        <Button className={styles.reserve} variant="contained" color="primary" component={ Link } to="/reservationfacilityList/">
+          予約一覧
+        </Button>
         <Button variant="contained" color="primary" component={ Link } to="/facility/">
           設備の登録
         </Button>

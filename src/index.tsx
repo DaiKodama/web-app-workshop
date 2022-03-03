@@ -7,6 +7,7 @@ import 'dayjs/locale/ja';
 import dayjs, { Dayjs } from 'dayjs';
 import { Routing } from './components/Routing'
 
+
 dayjs.locale('ja');
 
 class ExtendedUtils extends Utils {

@@ -19,28 +19,22 @@ import { IFacility } from '../models/IFacility'
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 
-const dummyFacilities: IFacility[] = [
+export const dummyFacilities: IFacility[] = [
   {
     id: '01',
     name: '設備００１',
-    // ダミーデータのため不必要なデータの定義は省略
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
     note: '',
   },
   {
     id: '02',
     name: '設備００２',
-    // ダミーデータのため不必要なデータの定義は省略
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
     note: '',
   },
   {
     id: '03',
     name: '設備００３',
-    // ダミーデータのため不必要なデータの定義は省略
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     system: {} as any,
     note: '',
   },
@@ -56,12 +50,12 @@ const initReservation: IReservation = {
   system: {
     createDate: new Date(),
     createUser: {
-      displayName: 'ebihara kenji',
+      displayName: 'dai kodama',
       email: '',
       face: 'https://bit.ly/3pM3urc',
     },
     lastUpdateUser: {
-      displayName: 'ebihara kenji',
+      displayName: 'dai kodama',
       email: '',
       face: 'https://bit.ly/3pM3urc',
     },

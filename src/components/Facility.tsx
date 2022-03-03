@@ -21,12 +21,12 @@ const initFacility: IFacility = {
   system: {
     createDate: new Date(),
     createUser: {
-      displayName: 'ebihara kenji',
+      displayName: 'dai kodama',
       email: '',
       face: 'https://bit.ly/3pM3urc',
     },
     lastUpdateUser: {
-      displayName: 'ebihara kenji',
+      displayName: 'dai kodama',
       email: '',
       face: 'https://bit.ly/3pM3urc',
     },
