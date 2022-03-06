@@ -7,10 +7,10 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
+    "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types"
     ],
-    "esModuleInterop": true,
   },
   "compileOnSave": true,
   "include": [
