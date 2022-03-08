@@ -9,7 +9,7 @@ export const Routing: React.FC = () => {
   return (
     <Switch>
       <Route path="/reservationfacilitylist" component={ReservationFacilityList} />
-      <Route path="/reservation" component={Reservation} />
+      <Route path="/reservation/:id?" component={Reservation} />
       <Route path="/facility" component={Facility}/>
       <Route path="/" exact component={ReservationList}/>
     </Switch>
