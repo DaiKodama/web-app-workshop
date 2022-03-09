@@ -1,23 +1,24 @@
+import Utils from '@date-io/dayjs';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/ja';
 import React from 'react';
 import ReactDom from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import Utils from '@date-io/dayjs';
-import 'dayjs/locale/ja';
-import dayjs, { Dayjs } from 'dayjs';
-import { Routing } from './components/Routing'
+import { Routing } from './components/Routing';
 import superagent from 'superagent';
 import firebase from 'firebase';
+import { Login } from './components/Login';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA2C_3mP53Iu5lLr1I0wU1lFM-PrwinEpA",
-  authDomain: "facility-reservations-73e6b.firebaseapp.com",
-  projectId: "facility-reservations-73e6b",
-  storageBucket: "facility-reservations-73e6b.appspot.com",
-  messagingSenderId: "46662637419",
-  appId: "1:46662637419:web:f303be13d3e7e6937c5e2e"
+  apiKey: 'AIzaSyCcagJWImWElMcwMpbrnAB9bsMYL2z3yXY',
+  authDomain: 'facility-reservations-ffca6.firebaseapp.com',
+  projectId: 'facility-reservations-ffca6',
+  storageBucket: 'facility-reservations-ffca6.appspot.com',
+  messagingSenderId: '257696009148',
+  appId: '1:257696009148:web:5e4d2efd00f0aef61739b9',
 };
-firebase.initalizeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 dayjs.locale('ja');
 
@@ -44,11 +45,17 @@ superagent.parse['application/json'] = (text: string) => {
   return obj;
 };
 
-ReactDom.render(
-  <MuiPickersUtilsProvider utils={ExtendedUtils} locale="ja">
-    <BrowserRouter>
-      <Routing />
-    </BrowserRouter>  
-  </MuiPickersUtilsProvider>,
-  document.getElementById('container'),
-);
+firebase.auth().onAuthStateChanged((user) => {
+  ReactDom.render(
+    <MuiPickersUtilsProvider utils={ExtendedUtils} locale="ja">
+      {!!user ? (
+        <BrowserRouter>
+          <Routing />
+        </BrowserRouter>
+      ) : (
+        <Login />
+      )}
+    </MuiPickersUtilsProvider>,
+    document.getElementById('container'),
+  );
+});
