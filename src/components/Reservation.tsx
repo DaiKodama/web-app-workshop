@@ -73,7 +73,6 @@ export const Reservation: React.FC = () => {
   const hour = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return dayjs(params.get('date') || undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.search]);
   const { id } = useParams<{ id: string }>();
   const [reservation, setReservation] = useState(initReservation(hour));
@@ -92,7 +91,7 @@ export const Reservation: React.FC = () => {
       setReservation(result);
       reset(result);
     });
-  }, [id, reset]);
+  }, [id]);
   const facilityMenuItems = useMemo(() => {
     return facilities.map((f) => (
       <MenuItem key={f.id} value={f.id}>
@@ -115,10 +114,10 @@ export const Reservation: React.FC = () => {
       await putReservation(inputValue);
       window.location.reload();
     }
-  }, [trigger, reservation, getValues, id, history]);
+  }, [id, reservation, trigger, getValues]);
   return (
     <Container maxWidth="sm">
-      <Paper className={style.paper} data-testid="container">
+      <Paper className={style.paper}>
         <FormControl>
           <InputLabel id="facility-label">設備</InputLabel>
           <Controller
@@ -143,7 +142,6 @@ export const Reservation: React.FC = () => {
             render={(data) => {
               return (
                 <DateTimePicker
-                  data-testid="start-date"
                   value={data.value}
                   onChange={data.onChange}
                   onBlur={data.onBlur}
@@ -162,7 +160,6 @@ export const Reservation: React.FC = () => {
             render={(data) => {
               return (
                 <DateTimePicker
-                  data-testid="end-date"
                   value={data.value}
                   onChange={data.onChange}
                   onBlur={data.onBlur}
@@ -181,7 +178,6 @@ export const Reservation: React.FC = () => {
           rules={{ required: true }}
           as={
             <TextField
-              data-testid="subject"
               label="目的"
               fullWidth
               error={!!errors.subject}
@@ -192,32 +188,24 @@ export const Reservation: React.FC = () => {
         <Controller
           control={control}
           name="description"
-          as={
-            <TextField
-              data-testid="description"
-              label="詳細"
-              fullWidth
-              multiline
-              value=""
-            />
-          }
+          as={<TextField label="詳細" fullWidth multiline value="" />}
         />
         <InputLabel shrink>登録者</InputLabel>
-        <div data-testid="create">
+        <p>
           <Chip
             label={system.createUser.displayName}
             avatar={<Avatar src={system.createUser.face} />}
           />
           {dayjs(system.createDate).format('YYYY-MM-DD HH:mm')}
-        </div>
+        </p>
         <InputLabel shrink>更新者</InputLabel>
-        <div data-testid="update">
+        <p>
           <Chip
             label={system.lastUpdateUser.displayName}
             avatar={<Avatar src={system.lastUpdateUser.face} />}
           />
           {dayjs(system.lastUpdate).format('YYYY-MM-DD HH:mm')}
-        </div>
+        </p>
         <Grid container>
           <Grid item xs={6}>
             <Button className={style.cancelButton} startIcon={<DeleteIcon />}>

@@ -8,7 +8,7 @@ module.exports = {
   // デバッグ情報を付与する。
   // 本番環境では、'product' とすることで、
   // コードが最適化されサイズが小さくなる。
-  mode: 'development',
+  mode: 'production',
   // 初めに読み込まれるファイル
   entry: './src/index.tsx',
   // 出力先の設定

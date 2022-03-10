@@ -10,28 +10,38 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useHistory, useParams } from 'react-router-dom';
+import { getCurrentUser } from '../auth';
+import {
+  getFacility,
+  postFacility,
+  putFacility,
+} from '../controllers/facilityController';
 import { IFacility } from '../models/IFacility';
 
-const initFacility: IFacility = {
-  id: '',
-  name: 'name の初期値',
-  note: 'note の初期値',
-  system: {
-    createDate: new Date(),
-    createUser: {
-      displayName: 'dai kodama',
-      email: '',
-      face: 'https://bit.ly/3pM3urc',
+const initFacility = (): IFacility => {
+  const user = getCurrentUser();
+  return {
+    id: '',
+    name: '',
+    note: '',
+    system: {
+      createDate: new Date(),
+      createUser: {
+        displayName: user?.displayName || '',
+        email: user?.email || '',
+        face: user?.photoURL || '',
+      },
+      lastUpdateUser: {
+        displayName: user?.displayName || '',
+        email: user?.email || '',
+        face: user?.photoURL || '',
+      },
+      lastUpdate: new Date(),
     },
-    lastUpdateUser: {
-      displayName: 'dai kodama',
-      email: '',
-      face: 'https://bit.ly/3pM3urc',
-    },
-    lastUpdate: new Date(),
-  },
+  };
 };
 
 const useStyle = makeStyles((theme) => ({
@@ -53,11 +63,36 @@ const useStyle = makeStyles((theme) => ({
 
 export const Facility: React.FC = () => {
   const style = useStyle();
-  const { system } = initFacility;
-  const { errors, control } = useForm({
-    defaultValues: initFacility,
+  const { id } = useParams<{ id: string }>();
+  const [facility, setFacility] = useState(initFacility());
+  const { system } = facility;
+  const { errors, control, reset, trigger, getValues } = useForm({
+    defaultValues: facility,
     mode: 'onBlur',
   });
+  useEffect(() => {
+    if (!id) return;
+    getFacility(id).then((result) => {
+      setFacility(result);
+      reset(result);
+    });
+  }, [id]);
+
+  const history = useHistory();
+  const onSave = useCallback(async () => {
+    const result = await trigger();
+    if (!result) return;
+    const inputValue = { ...facility, ...getValues() };
+    if (!id) {
+      // 新規作成
+      const id = await postFacility(inputValue);
+      history.replace('/facility/' + id);
+    } else {
+      // 更新
+      await putFacility(inputValue);
+      window.location.reload();
+    }
+  }, [id, facility, trigger, getValues]);
 
   return (
     <Container maxWidth="sm" className={style.root}>
@@ -107,6 +142,7 @@ export const Facility: React.FC = () => {
               variant="contained"
               color="primary"
               startIcon={<DoneIcon />}
+              onClick={onSave}
             >
               保存
             </Button>

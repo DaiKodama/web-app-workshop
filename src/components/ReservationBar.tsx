@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from 'react';
 import { IReservation } from '../models/IReservation';
 import { Property } from 'csstype';
-import { makeStyles, Theme } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 type PropsType = {
   reservation: IReservation;
@@ -12,13 +12,13 @@ type PropsType = {
   backgroundColor: Property.BackgroundColor;
 };
 
-type styleType = {
+type StyleType = {
   width: number;
   left: number;
   backgroundColor: Property.BackgroundColor;
-}
+};
 
-const useStyles = makeStyles<Theme, styleType>(() => ({
+const useStyles = makeStyles<Theme, StyleType>(() => ({
   root: {
     height: '100%',
     position: 'absolute',
@@ -32,10 +32,10 @@ const useStyles = makeStyles<Theme, styleType>(() => ({
     width: '100%',
     backgroundColor: (p) => p.backgroundColor,
     cursor: 'pointer',
-  }
+  },
 }));
 
-export const ReservationBar: React.FC<PropsType> = props => {
+export const ReservationBar: React.FC<PropsType> = (props) => {
   const {
     leftOffset,
     reservation,
@@ -44,17 +44,17 @@ export const ReservationBar: React.FC<PropsType> = props => {
     backgroundColor,
   } = props;
   const { startDate, endDate } = reservation;
-  
+
   const width = useMemo(() => {
     const hours = endDate.diff(startDate, 'minute') / 60;
     return hourWidth * hours;
   }, [startDate, endDate, hourWidth]);
-  
+
   const left = useMemo(() => {
     const beginDate = startDate.set('hour', beginHour).startOf('hour');
     const diffStart = startDate.diff(beginDate, 'minute') / 60;
     return leftOffset + diffStart * hourWidth;
-  },[beginHour, hourWidth, leftOffset, startDate]);
+  }, [beginHour, hourWidth, leftOffset, startDate]);
 
   const style = useStyles({
     width,
@@ -65,8 +65,8 @@ export const ReservationBar: React.FC<PropsType> = props => {
   const history = useHistory();
   const click = useCallback(() => {
     history.push('/reservation/' + reservation.id);
-  }, [history, reservation.id]);
-  
+  }, [reservation.id]);
+
   return (
     <div className={style.root}>
       <div className={style.bar} onClick={click}></div>

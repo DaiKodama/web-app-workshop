@@ -7,16 +7,17 @@ import ReactDom from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Routing } from './components/Routing';
 import superagent from 'superagent';
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app'; //compatをpathに加える
+import 'firebase/compat/auth';　
 import { Login } from './components/Login';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCcagJWImWElMcwMpbrnAB9bsMYL2z3yXY',
-  authDomain: 'facility-reservations-ffca6.firebaseapp.com',
-  projectId: 'facility-reservations-ffca6',
-  storageBucket: 'facility-reservations-ffca6.appspot.com',
-  messagingSenderId: '257696009148',
-  appId: '1:257696009148:web:5e4d2efd00f0aef61739b9',
+  apiKey: "AIzaSyA2C_3mP53Iu5lLr1I0wU1lFM-PrwinEpA",
+  authDomain: "facility-reservations-73e6b.firebaseapp.com",
+  projectId: "facility-reservations-73e6b",
+  storageBucket: "facility-reservations-73e6b.appspot.com",
+  messagingSenderId: "46662637419",
+  appId: "1:46662637419:web:f303be13d3e7e6937c5e2e"
 };
 firebase.initializeApp(firebaseConfig);
 
