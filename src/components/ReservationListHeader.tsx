@@ -80,7 +80,15 @@ export const ReservationListHeader: React.FC = () => {
           component={Link}
           to="/facility/"
         >
-          設備の登録
+        設備の登録
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/facilityreservationList/"
+        >
+          予約一覧
         </Button>
       </div>
     </div>
